@@ -1,0 +1,34 @@
+[
+  {
+    "dir": "Downloads",
+    "categories": {
+      "Documents": [".pdf", ".xlsx", ".doc", ".docx", ".pptx"],
+      "Images": [".png", ".jpg", ".svg"],
+      "Videos": [".mp4", ".ova"],
+      "Audios": [".mp3"],
+      "Scripts": [".py", ".java", ".c"],
+      "Compressed": [".zip", ".deb"]
+    },
+    "misc_category": "Misc",
+    "scheduled": {
+      "frequency": "interval",
+      "interval_minutes": 1
+    }
+  },
+  {
+    "dir": "Documents",
+    "categories": {
+      "Documents": [".pdf", ".xlsx", ".doc", ".docx", ".pptx"],
+      "Images": [".png", ".jpg", ".svg"],
+      "Videos": [".mp4", ".ova"],
+      "Audios": [".mp3"],
+      "Scripts": [".py", ".java", ".c"],
+      "Compressed": [".zip", ".deb"]
+    },
+    "misc_category": "Unsorted",
+    "scheduled": {
+      "frequency": "hourly",
+      "time": "00:15"
+    }
+  }
+]
