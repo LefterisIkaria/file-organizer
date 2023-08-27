@@ -1,65 +1,39 @@
 import json
 import logging
 
-from logging.handlers import RotatingFileHandler
+from typing import List
+from logger_config import setup_file_logging
 from filter_chain import FilterChain
-from filters import *
+from model import Config
+from filters import get_organizer_filters
+
+
+setup_file_logging(log_level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 def main():
     file_organizer = FileOrganizer()
-    file_organizer.run()
+    file_organizer.run(config_filepath="config.json")
 
 
 class FileOrganizer:
-    def __init__(self, log_level=logging.INFO) -> None:
-        self.logger = self.set_up_file_logging(log_level=logging.DEBUG)
 
-    def run(self):
-        self.logger.info("Application started.")
-        configurations = self.load_configurations("config.json")
+    def run(self, config_filepath: str):
+        logger.info("Application started.")
+        configurations = self.load_configurations(config_filepath)
 
         for config in configurations:
             self.process_config(config)
 
-        self.logger.info("Application finished processing all configurations.")
+        logger.info("Application finished processing all configurations.")
 
-    def setup_file_logging(self, filename='app.log', log_level=logging.INFO, max_log_size=5*1024*1024, backup_count=3):
-        """
-        Setup file logging.
-
-        Parameters:
-        - filename: Name of the log file.
-        - log_level: Logging level (e.g., logging.DEBUG, logging.INFO).
-        - max_log_size: Maximum log file size (in bytes) before it gets rotated.
-        - backup_count: Number of backup log files to keep.
-        """
-
-        logger = logging.getLogger()
-
-        # Check if handlers are already added to avoid duplicate logs
-        if not logger.handlers:
-            logger.setLevel(log_level)
-
-            # File handler with rotation
-            file_handler = RotatingFileHandler(
-                filename, maxBytes=max_log_size, backupCount=backup_count)
-            file_formatter = logging.Formatter(
-                '%(asctime)s - %(levelname)s - %(message)s')
-            file_handler.setFormatter(file_formatter)
-            logger.addHandler(file_handler)
-
-            # Optional: Stream handler to see logs in console (useful for debugging)
-            stream_handler = logging.StreamHandler()
-            stream_handler.setFormatter(file_formatter)
-            logger.addHandler(stream_handler)
-
-        return logger
-
-    def load_configurations(self, file_path: str) -> List[Config]:
+    def load_configurations(self, filepath: str) -> List[Config]:
         try:
-            with open("config.json", 'r') as f:
-                configurations = json.load(f)
+            with open(filepath, 'r') as f:
+                conf_json = json.load(f)
+                configurations = [Config(conf) for conf in conf_json]
+
                 logger.info(
                     f"Loaded {len(configurations)} configurations from config.json.")
 
@@ -69,7 +43,7 @@ class FileOrganizer:
                 f"Error loading configurations from config.json: {str(e)}")
             return []
 
-    def proccess_config(self, config: Config):
+    def process_config(self, config: Config):
         try:
             if not config.active:
                 logger.debug(
@@ -79,12 +53,7 @@ class FileOrganizer:
             logger.info(
                 f"Processing configuration for directory: {config.dir}")
 
-            filters = [
-                ValidateDirectoryPathFilter(),
-                CategoryValidationCreationFilter(),
-                MoveFilesToCategoryFilter(),
-                SortByExtensionFilter()
-            ]
+            filters = get_organizer_filters()
 
             chain = FilterChain(filters)
             response = chain.execute(config)

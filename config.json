@@ -2,35 +2,51 @@
   {
     "dir": "/home/lefteris/Downloads",
     "categories": {
-      "Documents": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
-      "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
-      "Music": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
-      "Videos": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
-      "Archives": [".zip", ".rar", ".tar", ".gz", ".7z"],
-      "Code": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
-      "Database": [".sql", ".db", ".sqlite", ".mdb"],
-      "Designs": [".psd", ".ai", ".sketch", ".xd"],
-      "E-books": [".epub", ".mobi"],
-      "Executables": [".exe", ".msi", ".sh", ".bat"]
+      "Documents": {
+        "extentions": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
+        "categorize_extentions": true
+      },
+      "Images": {
+        "extentions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
+        "categorize_extentions": true
+      },
+      "Music": {
+        "extentions": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
+        "categorize_extentions": false
+      },
+      "Videos": {
+        "extentions": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
+        "categorize_extentions": false
+      },
+      "Archives": {
+        "extentions": [".zip", ".rar", ".tar", ".gz", ".7z"],
+        "categorize_extentions": false
+      },
+      "Code": {
+        "extentions": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
+        "categorize_extentions": false
+      },
+      "Database": {
+        "extentions": [".sql", ".db", ".sqlite", ".mdb"],
+        "categorize_extentions": false
+      },
+      "Designs": {
+        "extentions": [".psd", ".ai", ".sketch", ".xd"],
+        "categorize_extentions": false
+      },
+      "E-books": {
+        "extentions": [".epub", ".mobi"],
+        "categorize_extentions": false
+      },
+      "Executables": {
+        "extentions": [".exe", ".msi", ".sh", ".bat"],
+        "categorize_extentions": false
+      }
     },
-    "sort_extentions": true,
+    "schedule": {
+      "type": "seconds",
+      "value": 1
+    },
     "active": true
-  },
-  {
-    "dir": "/home/lefteris/Documents",
-    "categories": {
-      "Documents": [".pdf", ".xlsx", ".doc", ".docx", ".pptx"],
-      "Images": [".png", ".jpg", ".svg"],
-      "Videos": [".mp4", ".ova"],
-      "Audios": [".mp3"],
-      "Scripts": [".py", ".java", ".c"],
-      "Compressed": [".zip", ".deb"]
-    },
-    "misc_category": "Unsorted",
-    "scheduled": {
-      "frequency": "hourly",
-      "time": "00:15"
-    },
-    "active": false
   }
 ]
