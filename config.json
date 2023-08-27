@@ -1,22 +1,23 @@
 [
   {
-    "dir": "Downloads",
+    "dir": "/home/lefteris/Downloads",
     "categories": {
-      "Documents": [".pdf", ".xlsx", ".doc", ".docx", ".pptx"],
-      "Images": [".png", ".jpg", ".svg"],
-      "Videos": [".mp4", ".ova"],
-      "Audios": [".mp3"],
-      "Scripts": [".py", ".java", ".c"],
-      "Compressed": [".zip", ".deb"]
+      "Documents": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
+      "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
+      "Music": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
+      "Videos": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
+      "Archives": [".zip", ".rar", ".tar", ".gz", ".7z"],
+      "Code": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
+      "Database": [".sql", ".db", ".sqlite", ".mdb"],
+      "Designs": [".psd", ".ai", ".sketch", ".xd"],
+      "E-books": [".epub", ".mobi"],
+      "Executables": [".exe", ".msi", ".sh", ".bat"]
     },
-    "misc_category": "Misc",
-    "scheduled": {
-      "frequency": "interval",
-      "interval_minutes": 1
-    }
+    "sort_extentions": true,
+    "active": true
   },
   {
-    "dir": "Documents",
+    "dir": "/home/lefteris/Documents",
     "categories": {
       "Documents": [".pdf", ".xlsx", ".doc", ".docx", ".pptx"],
       "Images": [".png", ".jpg", ".svg"],
@@ -29,6 +30,7 @@
     "scheduled": {
       "frequency": "hourly",
       "time": "00:15"
-    }
+    },
+    "active": false
   }
 ]
