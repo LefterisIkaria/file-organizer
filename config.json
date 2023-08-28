@@ -3,44 +3,44 @@
     "dir": "/home/lefteris/Downloads",
     "categories": {
       "Documents": {
-        "extentions": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
-        "categorize_extentions": true
+        "extensions": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
+        "categorize_extensions": true
       },
       "Images": {
-        "extentions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
-        "categorize_extentions": true
+        "extensions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
+        "categorize_extensions": true
       },
       "Music": {
-        "extentions": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
-        "categorize_extentions": false
+        "extensions": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
+        "categorize_extensions": false
       },
       "Videos": {
-        "extentions": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
-        "categorize_extentions": false
+        "extensions": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
+        "categorize_extensions": false
       },
       "Archives": {
-        "extentions": [".zip", ".rar", ".tar", ".gz", ".7z"],
-        "categorize_extentions": false
+        "extensions": [".zip", ".rar", ".tar", ".gz", ".7z"],
+        "categorize_extensions": true
       },
       "Code": {
-        "extentions": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
-        "categorize_extentions": false
+        "extensions": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
+        "categorize_extensions": false
       },
       "Database": {
-        "extentions": [".sql", ".db", ".sqlite", ".mdb"],
-        "categorize_extentions": false
+        "extensions": [".sql", ".db", ".sqlite", ".mdb"],
+        "categorize_extensions": false
       },
       "Designs": {
-        "extentions": [".psd", ".ai", ".sketch", ".xd"],
-        "categorize_extentions": false
+        "extensions": [".psd", ".ai", ".sketch", ".xd"],
+        "categorize_extensions": false
       },
       "E-books": {
-        "extentions": [".epub", ".mobi"],
-        "categorize_extentions": false
+        "extensions": [".epub", ".mobi"],
+        "categorize_extensions": false
       },
       "Executables": {
-        "extentions": [".exe", ".msi", ".sh", ".bat"],
-        "categorize_extentions": false
+        "extensions": [".exe", ".msi", ".sh", ".bat"],
+        "categorize_extensions": false
       }
     },
     "schedule": {

@@ -5,7 +5,7 @@ from typing import List
 from logger_config import setup_file_logging
 from filter_chain import FilterChain
 from model import Config
-from filters import get_organizer_filters
+from filters.filter_chain_constructor import build_filter_chain
 
 
 setup_file_logging(log_level=logging.DEBUG)
@@ -53,9 +53,7 @@ class FileOrganizer:
             logger.info(
                 f"Processing configuration for directory: {config.dir}")
 
-            filters = get_organizer_filters()
-
-            chain = FilterChain(filters)
+            chain = build_filter_chain()
             response = chain.execute(config)
 
             if response.status == "success":
