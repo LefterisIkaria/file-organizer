@@ -146,4 +146,4 @@ cython_debug/
 .DS_Store
 
 # Custom
-# Add any other files or directories you want to exclude from version control
+config.json
