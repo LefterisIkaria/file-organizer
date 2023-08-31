@@ -1,12 +1,12 @@
-from filters.directory_filters import (
+from src.organizer.filters.directory_filters import (
     DirectoryExistenceFilter, DirectoryCriticalFilter, DirectoryPermissionsFilter)
-from filters.category_filters import (
+from src.organizer.filters.category_filters import (
     CategoryExistenceFilter, CategoryExtensionSubdirsValidationFilter)
-from filters.file_filters import (
+from src.organizer.filters.file_filters import (
     FileHiddenFilter, FileValidationFilter, FileExtensionFilter)
-from filters.organize_filters import (
+from src.organizer.filters.organize_filters import (
     MoveFilesToCategoriesFilter, CategorizeByExtensionFilter, CleanupFilter)
-from filter_chain import FilterChain
+from src.organizer.filter_chain import FilterChain
 
 
 def build_filter_chain() -> FilterChain:

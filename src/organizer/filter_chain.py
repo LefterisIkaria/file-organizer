@@ -1,6 +1,7 @@
 from typing import List, TypeVar, Generic
 from abc import ABC, abstractmethod
-from model import Config
+
+from src.model import Config
 
 
 T = TypeVar("T")

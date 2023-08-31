@@ -1,8 +1,8 @@
 import os
 import logging
 
-from model import Config
-from filter_chain import *
+from src.organizer.filter_chain import *
+from src.model import Config
 
 logger = logging.getLogger(__name__)
 

@@ -2,20 +2,11 @@ import json
 import logging
 
 from typing import List
-from logger_config import setup_file_logging
-from filter_chain import FilterChain
-from model import Config
-from filters.filter_chain_constructor import build_filter_chain
 
+from src.model import Config
+from src.organizer.filters.filter_chain_constructor import build_filter_chain
 
-setup_file_logging(log_level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-
-def main():
-    file_organizer = FileOrganizer()
-    file_organizer.run(config_filepath="config.json")
-
 
 class FileOrganizer:
 
@@ -65,7 +56,3 @@ class FileOrganizer:
         except Exception as e:
             logger.error(
                 f"Error processing configuration for directory {config.dir}: {str(e)}")
-
-
-if __name__ == "__main__":
-    main()

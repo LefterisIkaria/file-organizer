@@ -1,7 +1,6 @@
 import os
 import shutil
 import argparse
-from model import Config
 
 
 def reset_directory(directory: str):

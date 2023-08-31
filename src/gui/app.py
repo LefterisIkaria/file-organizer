@@ -2,9 +2,10 @@ import json
 import tkinter as tk
 
 from typing import List
-from main import FileOrganizer
-from model import Config
 from tkinter import ttk, StringVar
+
+from src.organizer.file_organizer import FileOrganizer
+from src.model import Config
 
 class App(tk.Tk):
     def __init__(self, *args, **kwargs) -> None:
