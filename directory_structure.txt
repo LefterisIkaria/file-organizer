@@ -1,0 +1,39 @@
+.
+├── app.log
+├── config.json
+├── config.template.json
+├── directory_structure.txt
+├── README.md
+├── requirements.txt
+└── src
+    ├── gui
+    │   ├── app.py
+    │   └── __init__.py
+    ├── __init__.py
+    ├── logger_config.py
+    ├── model.py
+    ├── organizer
+    │   ├── file_organizer.py
+    │   ├── filter_chain.py
+    │   ├── filters
+    │   │   ├── category_filters.py
+    │   │   ├── directory_filters.py
+    │   │   ├── file_filters.py
+    │   │   ├── filter_chain_constructor.py
+    │   │   ├── __init__.py
+    │   │   ├── organize_filters.py
+    │   │   └── __pycache__
+    │   │       ├── category_filters.cpython-311.pyc
+    │   │       ├── directory_filters.cpython-311.pyc
+    │   │       ├── file_filters.cpython-311.pyc
+    │   │       ├── filter_chain_constructor.cpython-311.pyc
+    │   │       ├── __init__.cpython-311.pyc
+    │   │       └── organize_filters.cpython-311.pyc
+    │   ├── __init__.py
+    │   └── scheduler.py
+    └── scripts
+        ├── __init__.py
+        ├── reset_directory.py
+        └── sort_directories.py
+
+6 directories, 30 files
