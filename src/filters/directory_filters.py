@@ -46,6 +46,14 @@ class DirectoryCriticalFilter(Filter):
             "/Applications", "/Library", "/System", "/Users", "/private", "/usr/local"
         ]
 
+        # Special handling for macOS user directories
+        if path.startswith("/Users/"):
+            components = path.split(os.path.sep)
+           
+            if len(components) > 3:
+                return False
+
+
         # Check if path starts with one of the critical directories
         for dir in CRITICAL_DIRS:
             # Ensure it's a subdirectory, not just a prefix
