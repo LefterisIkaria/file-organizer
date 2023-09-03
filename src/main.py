@@ -17,26 +17,27 @@ def parse_args():
     parser.add_argument("--directory", type=str, help="Directory to reset")
     return parser.parse_args()
 
-# def setup():
-#     user_home = os.path.expanduser("~")
-#     app_dir = os.path.join(user_home, ".file-organizer")
-#     config_path = os.path.join(app_dir, "app.json")
-#     template_path = "config/app.template.json"
+def setup():
+    user_home = os.path.expanduser("~")
+    app_dir = os.path.join(user_home, ".file-organizer")
+    config_path = os.path.join(app_dir, "app.json")
+    template_path = "config/app.template.json"
 
-#     # Create the directory if it doesn't exist
-#     if not os.path.exists(app_dir):
-#         os.makedirs(app_dir)
+    # Create the directory if it doesn't exist
+    if not os.path.exists(app_dir):
+        os.makedirs(app_dir)
 
-#     # Check if app.json exists
-#     if not os.path.exists(config_path):
-#         # Copy app.template.json to app.json
-#         shutil.copy(template_path, config_path)
+    # Check if app.json exists
+    if not os.path.exists(config_path):
+        # Copy app.template.json to app.json
+        shutil.copy(template_path, config_path)
 
 def get_config_path():
     home_path = os.path.expanduser("~")
     return os.path.join(home_path, ".file-organizer", "app.json")
 
 def main():
+    setup()
     setup_logging_from_json("config/logging.json")
     args = parse_args()
 
