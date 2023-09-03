@@ -2,8 +2,8 @@ import logging
 import shutil
 import os
 
-from model import Config
-from filter_chain import *
+from src.models.config import Config
+from src.filter_chain.core import *
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,8 @@ class FileHiddenFilter(Filter):
     """
     Handles hidden files by moving them to a "Hidden" directory.
     """
+
+    priority: int = 4
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Checking for hidden files.")
@@ -45,6 +47,8 @@ class FileValidationFilter(Filter):
     Validates that files are correctly placed based on their extensions.
     """
 
+    priority: int = 5
+
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Validating file placements based on extensions.")
         try:
@@ -73,6 +77,8 @@ class FileExtensionFilter(Filter):
     """
     Handles files without extensions or with unusual extensions.
     """
+
+    priority: int = 6
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Checking for files without or with unusual extensions.")

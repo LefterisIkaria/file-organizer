@@ -1,71 +1,63 @@
-import json
+import argparse
 import logging
+import os
+import shutil
+from src.gui.app import App
+from src.config.logger_config import setup_logging_from_json
+from src.organizer.file_organizer import FileOrganizer
+from src.utils.reset_directory import reset_directory
 
-from typing import List
-from logger_config import setup_file_logging
-from filter_chain import FilterChain
-from model import Config
-from filters.filter_chain_constructor import build_filter_chain
-
-
-setup_file_logging(log_level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="File Organizer Application")
+    parser.add_argument("--gui", action="store_true", help="Start the GUI")
+    parser.add_argument("--organize", action="store_true", help="Run the file organizer")
+    parser.add_argument("--reset", action="store_true", help="Reset a directory")
+    parser.add_argument("--directory", type=str, help="Directory to reset")
+    return parser.parse_args()
+
+# def setup():
+#     user_home = os.path.expanduser("~")
+#     app_dir = os.path.join(user_home, ".file-organizer")
+#     config_path = os.path.join(app_dir, "app.json")
+#     template_path = "config/app.template.json"
+
+#     # Create the directory if it doesn't exist
+#     if not os.path.exists(app_dir):
+#         os.makedirs(app_dir)
+
+#     # Check if app.json exists
+#     if not os.path.exists(config_path):
+#         # Copy app.template.json to app.json
+#         shutil.copy(template_path, config_path)
+
+def get_config_path():
+    home_path = os.path.expanduser("~")
+    return os.path.join(home_path, ".file-organizer", "app.json")
 
 def main():
-    file_organizer = FileOrganizer()
-    file_organizer.run(config_filepath="config.json")
+    setup_logging_from_json("config/logging.json")
+    args = parse_args()
 
-
-class FileOrganizer:
-
-    def run(self, config_filepath: str):
-        logger.info("Application started.")
-        configurations = self.load_configurations(config_filepath)
-
-        for config in configurations:
-            self.process_config(config)
-
-        logger.info("Application finished processing all configurations.")
-
-    def load_configurations(self, filepath: str) -> List[Config]:
-        try:
-            with open(filepath, 'r') as f:
-                conf_json = json.load(f)
-                configurations = [Config(conf) for conf in conf_json]
-
-                logger.info(
-                    f"Loaded {len(configurations)} configurations from config.json.")
-
-                return configurations
-        except Exception as e:
-            logger.critical(
-                f"Error loading configurations from config.json: {str(e)}")
-            return []
-
-    def process_config(self, config: Config):
-        try:
-            if not config.active:
-                logger.debug(
-                    f"Skipping inactive configuration for directory: {config.dir}")
-                return
-
-            logger.info(
-                f"Processing configuration for directory: {config.dir}")
-
-            chain = build_filter_chain()
-            response = chain.execute(config)
-
-            if response.status == "success":
-                logger.info(
-                    f"Successfully categorized directory: {config.dir}")
-            else:
-                logger.error(
-                    f"Error categorizing directory {config.dir}: {response.error}")
-        except Exception as e:
-            logger.error(
-                f"Error processing configuration for directory {config.dir}: {str(e)}")
-
+    if args.gui:
+        logger.info("Starting GUI...")
+        app = App()
+        app.mainloop()
+    elif args.organize:
+        logger.info("Running the file organizer script...")
+        app_config_path = get_config_path()
+        organizer = FileOrganizer()
+        organizer.run(app_config_path)
+    elif args.reset:
+        if args.directory:
+            logger.info(f"Running the reset directory script on {args.directory}...")
+            reset_directory(args.directory)
+        else:
+            logger.warning("Directory not specified for reset. Use --directory to specify the directory.")
+    else:
+        logger.warning("No action specified. Use --gui to start the GUI or --organize to run the file organizer.")
 
 if __name__ == "__main__":
+   
     main()

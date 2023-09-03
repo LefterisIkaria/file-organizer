@@ -1,7 +1,6 @@
 import os
 import shutil
 import argparse
-from model import Config
 
 
 def reset_directory(directory: str):
@@ -33,8 +32,7 @@ def reset_directory(directory: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Reset a directory by moving all files to the main directory and deleting all categories and subcategories.")
+    parser = argparse.ArgumentParser(description="Reset a directory by moving all files to the main directory and deleting all categories and subcategories.")
     parser.add_argument("directory", help="Path to the directory to reset.")
     args = parser.parse_args()
 

@@ -2,8 +2,8 @@ import logging
 import shutil
 import os
 
-from model import Config
-from filter_chain import *
+from src.models.config import Config
+from src.filter_chain.core import *
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,8 @@ class MoveFilesToCategoriesFilter(Filter):
     """
     Moves files from the main directory to their respective category directories.
     """
+
+    priority: int = 7
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Moving files to their respective category directories.")
@@ -44,6 +46,8 @@ class CategorizeByExtensionFilter(Filter):
     Further categorizes files within categories based on their extensions.
     """
 
+    priority: int = 8
+
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug(
             "Categorizing files within categories based on extensions.")
@@ -75,6 +79,8 @@ class CleanupFilter(Filter):
     """
     Removes empty categories or subcategories.
     """
+
+    priority: int = 9
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Cleaning up empty directories.")

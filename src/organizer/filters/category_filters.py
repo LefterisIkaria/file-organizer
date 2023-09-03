@@ -2,8 +2,8 @@ import logging
 import shutil
 import os
 
-from model import Config
-from filter_chain import *
+from src.models.config import Config
+from src.filter_chain.core import *
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,8 @@ class CategoryExistenceFilter(Filter):
     """
     Ensures that each category directory exists. If not, it creates it.
     """
+
+    priority: int = 2
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug("Ensuring category directories exist.")
@@ -39,6 +41,8 @@ class CategoryExtensionSubdirsValidationFilter(Filter):
     Validates the existence or absence of extension subdirectories based on the 
     categorize_extensions flag of each category.
     """
+
+    priority: int = 3
 
     def do_filter(self, config: Config, chain: FilterChain) -> FilterResponse:
         logger.debug(
