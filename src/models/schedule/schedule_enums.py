@@ -10,7 +10,7 @@ class ScheduleEnum(Enum):
     
 
 
-class ScheduleType(Enum):
+class ScheduleType(ScheduleEnum):
     SECOND = 1
     MINUTE = 2
     HOUR = 3
