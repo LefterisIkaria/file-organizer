@@ -1,7 +1,7 @@
 import json
+import os
 import tkinter as tk
 
-from typing import List
 from tkinter import ttk, StringVar
 
 from src.organizer.file_organizer import FileOrganizer
@@ -48,7 +48,7 @@ class App(tk.Tk):
         # Create ConfigTreeView
         self.tree = ConfigTreeView(self.main_frame)
         self.tree.grid(row=0, column=0, sticky="nsew")
-        self.tree.load_data(self.load_config())
+        self.tree.load_data(App.load_config())
 
         # Create bottom frame for 'Run Configurations' Button
         self.bottom_frame = ttk.Frame(self.root_frame)
@@ -60,22 +60,28 @@ class App(tk.Tk):
         self.run_button = ttk.Button(self.bottom_frame, text="Run All Configurations", command=self.on_run_configs)
         self.run_button.grid(row=0, column=0, sticky="e")
 
-    
 
     @staticmethod
-    def load_config() -> List[Config]:
-        with open("config/config.json", 'r') as f:
+    def get_config_path() -> str:
+        home_path = os.path.expanduser("~")
+        return os.path.join(home_path, ".file-organizer", "app.json")
+
+    @staticmethod
+    def load_config() -> list[Config]:
+        app_config_path = App.get_config_path()
+        with open(app_config_path, 'r') as f:
             configurations = json.load(f)
             return [Config(config) for config in configurations]
     
 
     def on_search(self, event):
-        searched_configs = [config for config in self.load_config() if self.search_var.get() in config.dir]
+        searched_configs = [config for config in App.load_config() if self.search_var.get() in config.dir]
         self.tree.clear_data()
         self.tree.load_data(searched_configs)
     
     def on_run_configs(self):
-        self.file_organizer.run("config/config.json")
+        app_config_path = App.get_config_path()
+        self.file_organizer.run(app_config_path)
 
 
 class ConfigTreeView(ttk.Treeview):
@@ -96,7 +102,7 @@ class ConfigTreeView(ttk.Treeview):
         for row in self.get_children():
             self.delete(row)
 
-    def load_data(self, data: List[Config]):
+    def load_data(self, data: list[Config]):
         for i, config in enumerate(data):
             self.insert("", i, values=(
                 config.dir,

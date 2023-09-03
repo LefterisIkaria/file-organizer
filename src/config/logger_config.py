@@ -1,22 +1,19 @@
+import os, json, sys
 import logging
+import logging.config
 
-from logging.handlers import RotatingFileHandler
+def setup_logging_from_json(filepath: str):
 
+    log_dir = os.path.join(os.path.expanduser("~"), ".file-organizer", "logs")
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
 
-def setup_file_logging(filename='app.log', log_level=logging.INFO, max_log_size=5*1024*1024, backup_count=3):
-    logger = logging.getLogger()
+    with open(filepath, "r") as f:
+        config = json.load(f)
 
-    if not logger.handlers:
-        logger.setLevel(log_level)
+    # Replace {USER_HOME} with the actual path
+    for handler in config['handlers'].values():
+        if 'filename' in handler:
+            handler['filename'] = handler['filename'].format(USER_HOME=log_dir)
 
-        file_handler = RotatingFileHandler('logs/' + filename, maxBytes=max_log_size, backupCount=backup_count)
-        file_formatter = logging.Formatter(
-            '%(asctime)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(file_formatter)
-        logger.addHandler(file_handler)
-
-        # stream_handler = logging.StreamHandler()
-        # stream_handler.setFormatter(file_formatter)
-        # logger.addHandler(stream_handler)
-
-    return logger
+    logging.config.dictConfig(config)
