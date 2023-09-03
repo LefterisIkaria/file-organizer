@@ -5,7 +5,7 @@ from typing import List
 from tkinter import ttk, StringVar
 
 from src.organizer.file_organizer import FileOrganizer
-from src.model import Config
+from src.models.config import Config
 
 class App(tk.Tk):
     def __init__(self, *args, **kwargs) -> None:
@@ -64,7 +64,7 @@ class App(tk.Tk):
 
     @staticmethod
     def load_config() -> List[Config]:
-        with open("config.json", 'r') as f:
+        with open("config/config.json", 'r') as f:
             configurations = json.load(f)
             return [Config(config) for config in configurations]
     
@@ -75,7 +75,7 @@ class App(tk.Tk):
         self.tree.load_data(searched_configs)
     
     def on_run_configs(self):
-        self.file_organizer.run("config.json")
+        self.file_organizer.run("config/config.json")
 
 
 class ConfigTreeView(ttk.Treeview):
@@ -105,7 +105,3 @@ class ConfigTreeView(ttk.Treeview):
                 config.active
             ))
     
-
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
