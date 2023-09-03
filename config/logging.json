@@ -4,13 +4,17 @@
   "formatters": {
     "simple": {
       "format": "%(asctime)s - %(levelname)s - %(message)s"
+    },
+    "colored": {
+      "()": "src.config.logger_config.ColoredFormatter",
+      "format": "%(asctime)s - %(levelname)s - %(message)s"
     }
   },
   "handlers": {
     "console": {
       "class": "logging.StreamHandler",
       "level": "DEBUG",
-      "formatter": "simple",
+      "formatter": "colored",
       "stream": "ext://sys.stdout"
     },
     "info_file_handler": {
