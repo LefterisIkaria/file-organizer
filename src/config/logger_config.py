@@ -17,7 +17,6 @@ class ColoredFormatter(logging.Formatter):
     }
 
     def format(self, record):
-        log_message = super(ColoredFormatter, self).format(record)
         return (
             f"{self.COLORS['TIMESTAMP']}{self.formatTime(record, self.datefmt)}{self.COLORS['ENDC']} "
             f"{self.COLORS['LEVEL_NAME'].get(record.levelname)}{record.levelname}{self.COLORS['ENDC']} "
@@ -40,14 +39,3 @@ def setup_logging_from_json(filepath: str):
             handler['filename'] = handler['filename'].format(USER_HOME=log_dir)
 
     logging.config.dictConfig(config)
-
-     # Create a ColoredFormatter
-    colored_formatter = ColoredFormatter('%(asctime)s - %(levelname)s - %(message)s')
-
-    # Get the root logger
-    logger = logging.getLogger()
-
-    # Update the console handler to use the ColoredFormatter
-    for handler in logger.handlers:
-        if isinstance(handler, logging.StreamHandler):
-            handler.setFormatter(colored_formatter)
