@@ -9,8 +9,7 @@ def setup_file_logging(filename='app.log', log_level=logging.INFO, max_log_size=
     if not logger.handlers:
         logger.setLevel(log_level)
 
-        file_handler = RotatingFileHandler(
-            filename, maxBytes=max_log_size, backupCount=backup_count)
+        file_handler = RotatingFileHandler('logs/' + filename, maxBytes=max_log_size, backupCount=backup_count)
         file_formatter = logging.Formatter(
             '%(asctime)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(file_formatter)

@@ -1,21 +1,4 @@
-from typing import List, Dict
-
-
-class Category:
-    def __init__(self, name: str, data: Dict):
-        self.name = name
-        self.extensions = set(data.get("extensions", []))
-        self.categorize_extensions = data.get("categorize_extensions", False)
-
-        self._validate()
-
-    def _validate(self):
-        if not self.name or not isinstance(self.name, str):
-            raise ValueError("Invalid category name.")
-        if not isinstance(self.extensions, set):
-            raise ValueError("Extensions should be a set.")
-        if not isinstance(self.categorize_extensions, bool):
-            raise ValueError("Invalid value for categorize_extensions flag.")
+from src.models.category import Category
 
 
 class Config:
@@ -27,8 +10,9 @@ class Config:
 
         self._validate()
 
-    def _extract_categories(self, categories_data: dict) -> List[Category]:
+    def _extract_categories(self, categories_data: dict) -> list[Category]:
         return [Category(name, data) for name, data in categories_data.items()]
+    
 
     def _validate(self):
         # Validate directory path
@@ -36,7 +20,7 @@ class Config:
             raise ValueError("Invalid or missing 'dir' in configuration.")
 
         # Validate categories
-        if not self.categories or not isinstance(self.categories, List):
+        if not self.categories or not isinstance(self.categories, list):
             raise ValueError(
                 "'categories' must be a List of Category objects.")
 
