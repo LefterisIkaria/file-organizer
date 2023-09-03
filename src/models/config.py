@@ -1,4 +1,4 @@
-from src.models.category import Category
+from .category import Category
 
 
 class Config:
