@@ -1,99 +1,89 @@
-from abc import ABC, abstractmethod
+import re
+from .schedule_enums import Day, Month, ScheduleType
 
-class Schedule(ABC):
+
+class Schedule:
     
-    @abstractmethod
-    def to_dict(self) -> dict:
-        raise NotImplementedError()
-    
-    @staticmethod
-    @abstractmethod    
-    def from_dict(data: dict) -> 'Schedule':
-        raise NotImplementedError()
+    def __init__(
+            self, 
+            type: ScheduleType,
+            interval: int = 1,
+            time: str = None,
+            day: Day = None,
+            month: Month = None,
+            date: int = None,
+            active: bool = False
 
-    @abstractmethod
-    def _validate(self):
-        raise NotImplementedError()
-    
-
-# {
-#   "name": "Config3",
-#   "dir": "/yet/another/directory",
-#   "schedule": {
-#     "time_unit": "minutes",
-#     "interval": 5,
-#     "day": null,
-#     "time": null,
-#     "active": true
-#   }
-# }
-
-
-{
-  "type": "Year",
-  "interval": 1,
-  "time": "14:00",
-  "day": 15,
-  "month": "JANUARY"
-}
-
-{
-  "type": "Month",
-  "interval": 3,
-  "time": "20:00",
-  "day": 31,
-  "month": None
-}
-
-{
-  "type": "Week",
-  "interval": 5,
-  "time": "13:30",
-  "day": "Monday",
-  "month": None
-}
-
-{
-  "type": "Day",
-  "interval": 15,
-  "time": "16:30",
-  "day": None,
-  "month": None
-}
-
-{
-  "type": "Minute",
-  "interval": 40,
-  "time": None,
-  "day": None,
-  "month": None
-}
-
-{
-  "type": "Second",
-  "interval": 30,
-  "time": None,
-  "day": None,
-  "month": None
-}
-
-
-
-
-class DaySchedule(Schedule):
-
-    def __init__(self, time: str = "00:00") -> None:
+    ) -> None:        
+        self.type = type
+        self.interval = interval
         self.time = time
+        self.day = day
+        self.month = month
+        self.date = date
+        self.active = active
 
+        self._validate()
+    
     def to_dict(self) -> dict:
-        return super().to_dict()
-
+        return {
+            'type': self.type.name,
+            'interval': self.interval,
+            'time': self.time,
+            'day': self.day.name,
+            'month': self.month.name,
+            'date': self.date,
+            'active': self.active
+        }
+    
     @staticmethod
-    def from_dict(data: dict) -> 'DaySchedule':
-        return super().from_dict(data)
-
+    def from_dict(data: dict) -> 'Schedule':
+        return Schedule(
+            ScheduleType.from_str_value(data.get("type")),
+            data.get('interval'),
+            data.get('time'),
+            Day.from_str_value(data.get('day')),
+            Month.from_str_value(data.get('month')),
+            data.get('date'),
+            data.get('active')
+        )
+    
+    
     def _validate(self):
-        return super()._validate()
+        if self.interval < 0:
+            raise ValueError("Invalid value: interval must be greater than 0")
+        
+        type_validators = {
+            ScheduleType.DAY: self._validate_day,
+            ScheduleType.WEEK: self._validate_week,
+            ScheduleType.MONTH: self._validate_month,
+            ScheduleType.YEAR: self._validate_year,
+        }
+        
+        validator = type_validators.get(self.type)
+        if validator:
+            validator()
+    
+    def _validate_day(self):
+        if not Schedule.validate_time(self.time):
+            raise ValueError("Invalid time format or range")
+    
+    def _validate_week(self):
+        self._validate_day()
+    
+    def _validate_month(self):
+        self._validate_day()
+        if self.date < 1 or self.date > 31:
+            raise ValueError("Invalid date, is out of range [1, 31]")
+    
+    def _validate_year(self):
+        self._validate_month()
     
 
-# other schedules
+    @staticmethod
+    def validate_time(time: str) -> bool:
+        # Validate the format using regular expression
+        if not re.match(r'^([0-1][0-9]|2[0-3]):[0-5][0-9]$', time):
+            return False
+        return True
+        
