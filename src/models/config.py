@@ -1,11 +1,12 @@
 from .category import Category
+from .schedule.schedule import Schedule
 
 
 class Config:
     def __init__(self, data: dict):
         self.dir = data.get("dir")
-        self.categories = self._extract_categories(data.get("categories", []))
-        self.schedule = data.get("schedule")
+        self.categories = self._extract_categories(data.get("categories"))
+        self.schedule = Schedule.from_dict(data.get("schedule"))
         self.active = data.get("active", False)
 
         self._validate()
@@ -30,12 +31,8 @@ class Config:
             raise ValueError("Duplicate extensions found across categories.")
 
         # Validate schedule
-        # if not isinstance(self.schedule, dict):
-            # raise ValueError("'schedule' must be a dictionary.")
-        # if self.schedule.get("type") not in ["seconds", "minutes", "hours", "days"]:
-            # raise ValueError("Invalid 'type' in schedule.")
-        # if not isinstance(self.schedule.get("value"), int) or self.schedule.get("value") <= 0:
-            # raise ValueError("'value' in schedule must be a positive integer.")
+        if not self.schedule:
+            raise ValueError("'schedule' must be a valid Schedule object.")
 
         # Validate active flag
         if not isinstance(self.active, bool):

@@ -1,7 +1,10 @@
 import argparse
 import logging
 import os
+import json
 import shutil
+from models.config import Config
+from organizer.scheduler import Scheduler
 from src.gui.app import App
 from src.config.logger_config import setup_logging_from_json
 from src.organizer.file_organizer import FileOrganizer
@@ -13,6 +16,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="File Organizer Application")
     parser.add_argument("--gui", action="store_true", help="Start the GUI")
     parser.add_argument("--organize", action="store_true", help="Run the file organizer")
+    parser.add_argument("--scheduler", action="store_true", help="Run scheduler")
     parser.add_argument("--reset", action="store_true", help="Reset a directory")
     parser.add_argument("--directory", type=str, help="Directory to reset")
     return parser.parse_args()
@@ -56,6 +60,22 @@ def main():
             reset_directory(args.directory)
         else:
             logger.warning("Directory not specified for reset. Use --directory to specify the directory.")
+    
+    elif args.scheduler:
+        app_config_path = get_config_path()
+        with open(app_config_path) as f:
+            configs = json.load(f)
+        configs = [Config(config) for config in configs]
+        for config in configs:
+            schedule = config.schedule
+            
+            organizer = FileOrganizer()
+            scheduler = Scheduler(schedule)
+            scheduler.run_task(organizer.run, app_config_path)
+            scheduler.start()
+            logger.info(f"Scheduling the file organizer to run every {schedule.interval} {schedule.type.name.lower()}(s)...")
+
+
     else:
         logger.warning("No action specified. Use --gui to start the GUI or --organize to run the file organizer.")
 

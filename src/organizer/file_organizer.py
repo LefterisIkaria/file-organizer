@@ -25,11 +25,11 @@ class FileOrganizer:
                 conf_json = json.load(f)
                 configurations = [Config(conf) for conf in conf_json]
 
-                logger.info(f"Loaded {len(configurations)} configurations from config.json.")
+                logger.info(f"Loaded {len(configurations)} configurations from {filepath}.")
 
                 return configurations
         except Exception as e:
-            logger.critical(f"Error loading configurations from config.json: {str(e)}")
+            logger.critical(f"Error loading configurations from {filepath}: {str(e)}")
             return []
 
     def process_config(self, config: Config):
