@@ -47,7 +47,7 @@ def main():
 
     if args.gui:
         logger.info("Starting GUI...")
-        app = App()
+        app = App(themename="darkly")
         app.mainloop()
     elif args.organize:
         logger.info("Running the file organizer script...")
