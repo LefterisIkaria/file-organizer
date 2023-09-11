@@ -39,9 +39,9 @@ def get_config_path():
     home_path = os.path.expanduser("~")
     return os.path.join(home_path, ".file-organizer", "app.json")
 
-def run_gui():
+def run_gui(config_manager: ConfigManager):
     logger.info("Starting GUI...")
-    app = App(themename="darkly")
+    app = App(config_manager, themename="darkly", )
     app.mainloop()
 
 
@@ -76,7 +76,7 @@ def main():
     args = parse_args()
 
     if args.gui:
-       run_gui()
+       run_gui(config_manager)
     elif args.organizer:
        run_organizer(config_manager)
     elif args.reset:
