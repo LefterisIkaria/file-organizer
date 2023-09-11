@@ -1,6 +1,6 @@
 {
   "active": true,
-  "directory": "/path/to/dir",
+  "directory": "/home/lefos/Downloads",
   "categories": [
     {
       "name": "Documents",
