@@ -1,89 +1,60 @@
-import re
-from .schedule_enums import Day, Month, ScheduleType
+from src.models.schedule.schedule_enums import Month, ScheduleType, WeekDay
 
 
 class Schedule:
     
-    def __init__(
-            self, 
-            type: ScheduleType,
-            interval: int = 1,
-            time: str = None,
-            day: Day = None,
-            month: Month = None,
-            date: int = None,
-            active: bool = False
-
-    ) -> None:        
+    def __init__(self, type: ScheduleType, interval: int = 1, time: str = None, weekday: WeekDay = None, month: Month = None, day: int = None, active: bool = False) -> None: 
         self.type = type
         self.interval = interval
         self.time = time
-        self.day = day
+        self.weekday = weekday
         self.month = month
-        self.date = date
+        self.day = day
         self.active = active
 
-        self._validate()
     
     def to_dict(self) -> dict:
         return {
             'type': self.type.name,
             'interval': self.interval,
-            'time': self.time,
-            'day': self.day.name,
-            'month': self.month.name,
-            'date': self.date,
+            'time': self.time if self.time else None,
+            'weekday': self.weekday.name if self.weekday else None,
+            'month': self.month.name if self.month else None,
+            'day': self.day if self.day else None,
             'active': self.active
         }
     
     @staticmethod
     def from_dict(data: dict) -> 'Schedule':
         return Schedule(
-            ScheduleType.from_str_value(data.get("type")),
-            data.get('interval'),
-            data.get('time'),
-            Day.from_str_value(data.get('day')),
-            Month.from_str_value(data.get('month')),
-            data.get('date'),
-            data.get('active')
+            type=ScheduleType.from_str_value(data.get("type")),
+            interval=data.get('interval'),
+            time=data.get('time'),
+            weekday=WeekDay.from_str_value(data.get('weekday')),
+            month=Month.from_str_value(data.get('month')),
+            day=data.get('day'),
+            active=data.get('active')
         )
     
-    
-    def _validate(self):
-        if self.interval < 0:
-            raise ValueError("Invalid value: interval must be greater than 0")
-        
-        type_validators = {
-            ScheduleType.DAY: self._validate_day,
-            ScheduleType.WEEK: self._validate_week,
-            ScheduleType.MONTH: self._validate_month,
-            ScheduleType.YEAR: self._validate_year,
-        }
-        
-        validator = type_validators.get(self.type)
-        if validator:
-            validator()
-    
-    def _validate_day(self):
-        if not Schedule.validate_time(self.time):
-            raise ValueError("Invalid time format or range")
-    
-    def _validate_week(self):
-        self._validate_day()
-    
-    def _validate_month(self):
-        self._validate_day()
-        if self.date < 1 or self.date > 31:
-            raise ValueError("Invalid date, is out of range [1, 31]")
-    
-    def _validate_year(self):
-        self._validate_month()
-    
+    def __str__(self) -> str:
 
-    @staticmethod
-    def validate_time(time: str) -> bool:
-        # Validate the format using regular expression
-        if not re.match(r'^([0-1][0-9]|2[0-3]):[0-5][0-9]$', time):
-            return False
-        return True
         
+        base_str = ""
+        if self.interval == 1:
+            base_str += f"Every {self.type.name.capitalize()}"
+        else:
+           base_str += f"Every {self.interval} {self.type.name.capitalize()}s"
+
+        if self.month:
+            base_str += f", In: {self.month.name.capitalize()}"
+        
+        if self.day:
+            base_str += f", {self.day}"
+
+        if self.weekday:
+            base_str += f", On: {self.weekday.name.capitalize()}"
+        
+        if self.time:
+            base_str += f", At: {self.time}"
+
+        return base_str

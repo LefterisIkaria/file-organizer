@@ -1,52 +1,55 @@
-[
-  {
-    "dir": "/path/to/dir",
-    "categories": {
-      "Documents": {
-        "extensions": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
-        "categorize_extensions": true
+{
+    "/path/to/dir": {
+        "categories": {
+          "Documents": {
+            "extensions": [".doc", ".docx", ".pdf", ".txt", ".odt", ".xls", ".xlsx", ".ppt", ".pptx"],
+            "categorize_extensions": true
+          },
+          "Images": {
+            "extensions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
+            "categorize_extensions": true
+          },
+          "Music": {
+            "extensions": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
+            "categorize_extensions": false
+          },
+          "Videos": {
+            "extensions": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
+            "categorize_extensions": false
+          },
+          "Archives": {
+            "extensions": [".zip", ".rar", ".tar", ".gz", ".7z"],
+            "categorize_extensions": true
+          },
+          "Code": {
+            "extensions": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
+            "categorize_extensions": true
+          },
+          "Database": {
+            "extensions": [".sql", ".db", ".sqlite", ".mdb"],
+            "categorize_extensions": false
+          },
+          "Designs": {
+            "extensions": [".psd", ".ai", ".sketch", ".xd"],
+            "categorize_extensions": false
+          },
+          "E-books": {
+            "extensions": [".epub", ".mobi"],
+            "categorize_extensions": false
+          },
+          "Executables": {
+            "extensions": [".exe", ".msi", ".sh", ".bat"],
+            "categorize_extensions": false
+          }
       },
-      "Images": {
-        "extensions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".svg"],
-        "categorize_extensions": true
+      "schedule": {
+          "type": "SECOND",
+          "interval": 1,
+          "time": null,
+          "day": null,
+          "month": null,
+          "weekday": null
       },
-      "Music": {
-        "extensions": [".mp3", ".wav", ".flac", ".m4a", ".aac", ".ogg"],
-        "categorize_extensions": false
-      },
-      "Videos": {
-        "extensions": [".mp4", ".mkv", ".flv", ".mov", ".avi", ".wmv"],
-        "categorize_extensions": false
-      },
-      "Archives": {
-        "extensions": [".zip", ".rar", ".tar", ".gz", ".7z"],
-        "categorize_extensions": true
-      },
-      "Code": {
-        "extensions": [".py", ".js", ".html", ".css", ".java", ".c", ".cpp", ".go", ".rb", ".php"],
-        "categorize_extensions": true
-      },
-      "Database": {
-        "extensions": [".sql", ".db", ".sqlite", ".mdb"],
-        "categorize_extensions": false
-      },
-      "Designs": {
-        "extensions": [".psd", ".ai", ".sketch", ".xd"],
-        "categorize_extensions": false
-      },
-      "E-books": {
-        "extensions": [".epub", ".mobi"],
-        "categorize_extensions": false
-      },
-      "Executables": {
-        "extensions": [".exe", ".msi", ".sh", ".bat"],
-        "categorize_extensions": false
-      }
-    },
-    "schedule": {
-      "type": "seconds",
-      "value": 1
-    },
-    "active": true
+      "active": true
   }
-]
+}

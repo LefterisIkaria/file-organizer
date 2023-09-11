@@ -1,0 +1,152 @@
+{
+    "/path/to/dir": {
+        "categories": {
+            "Designs": {
+                "extensions": [
+                    ".sketch",
+                    ".psd",
+                    ".xd",
+                    ".ai"
+                ],
+                "sort_extensions": false
+            },
+            "Executables": {
+                "extensions": [
+                    ".sh",
+                    ".bat",
+                    ".exe",
+                    ".msi"
+                ],
+                "sort_extensions": false
+            },
+            "Code": {
+                "extensions": [
+                    ".java",
+                    ".html",
+                    ".cpp",
+                    ".go",
+                    ".rb",
+                    ".js",
+                    ".py",
+                    ".c",
+                    ".php",
+                    ".css"
+                ],
+                "sort_extensions": false
+            },
+            "Documents": {
+                "extensions": [
+                    ".pptx",
+                    ".pdf",
+                    ".odt",
+                    ".xlsx",
+                    ".docx",
+                    ".doc",
+                    ".xls",
+                    ".ppt",
+                    ".txt"
+                ],
+                "sort_extensions": false
+            },
+            "Archives": {
+                "extensions": [
+                    ".gz",
+                    ".7z",
+                    ".tar",
+                    ".rar",
+                    ".zip"
+                ],
+                "sort_extensions": false
+            },
+            "E-books": {
+                "extensions": [
+                    ".mobi",
+                    ".epub"
+                ],
+                "sort_extensions": false
+            },
+            "Images": {
+                "extensions": [
+                    ".ico",
+                    ".png",
+                    ".svg",
+                    ".bmp",
+                    ".gif",
+                    ".jpeg",
+                    ".jpg",
+                    ".tiff"
+                ],
+                "sort_extensions": false
+            },
+            "Videos": {
+                "extensions": [
+                    ".flv",
+                    ".mov",
+                    ".wmv",
+                    ".mp4",
+                    ".avi",
+                    ".mkv"
+                ],
+                "sort_extensions": false
+            },
+            "Music": {
+                "extensions": [
+                    ".ogg",
+                    ".wav",
+                    ".flac",
+                    ".m4a",
+                    ".mp3",
+                    ".aac"
+                ],
+                "sort_extensions": false
+            },
+            "Database": {
+                "extensions": [
+                    ".sql",
+                    ".mdb",
+                    ".sqlite",
+                    ".db"
+                ],
+                "sort_extensions": false
+            }
+        },
+        "schedule": {
+            "type": "SECOND",
+            "interval": 1,
+            "time": null,
+            "weekday": null,
+            "month": null,
+            "day": null,
+            "active": null
+        },
+        "active": true
+    },
+    "/path/to/new/dir": {
+        "categories": {
+            "New Category 1": {
+                "extensions": [
+                    ".one",
+                    ".two"
+                ],
+                "sort_extensions": false
+            },
+            "XDD": {
+                "extensions": [
+                    ".four",
+                    ".three"
+                ],
+                "sort_extensions": false
+            }
+        },
+        "schedule": {
+            "type": "MINUTE",
+            "interval": 10,
+            "time": null,
+            "weekday": null,
+            "month": null,
+            "day": null,
+            "active": false
+        },
+        "active": false
+    }
+}

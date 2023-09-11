@@ -1,5 +1,5 @@
 import calendar
-from enum import Enum, StrEnum, auto
+from enum import Enum
 
 
 class ScheduleEnum(Enum):
@@ -20,7 +20,7 @@ class ScheduleType(ScheduleEnum):
     YEAR = 7
 
 
-class Day(ScheduleEnum):
+class WeekDay(ScheduleEnum):
     MONDAY = 1
     TUESDAY = 2
     WEDNESDAY = 3
