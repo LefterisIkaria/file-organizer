@@ -1,6 +1,6 @@
-import os, json
+import os
+import json
 import logging
-import logging.config
 
 class ColoredFormatter(logging.Formatter):
     COLORS = {
@@ -24,7 +24,7 @@ class ColoredFormatter(logging.Formatter):
         )
 
 
-def setup_logging_from_json(filepath: str):
+def setup_logging(filepath: str):
 
     log_dir = os.path.join(os.path.expanduser("~"), ".file-organizer", "logs")
     if not os.path.exists(log_dir):
@@ -33,7 +33,6 @@ def setup_logging_from_json(filepath: str):
     with open(filepath, "r") as f:
         config = json.load(f)
 
-    # Replace {USER_HOME} with the actual path
     for handler in config['handlers'].values():
         if 'filename' in handler:
             handler['filename'] = handler['filename'].format(USER_HOME=log_dir)

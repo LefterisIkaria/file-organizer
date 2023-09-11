@@ -1,6 +1,5 @@
 import os
 import shutil
-import argparse
 
 
 def reset_directory(directory: str):
@@ -29,12 +28,3 @@ def reset_directory(directory: str):
                             sub_item_path, file), directory)
                     os.rmdir(sub_item_path)  # Delete the now-empty subcategory
             os.rmdir(item_path)  # Delete the now-empty category
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Reset a directory by moving all files to the main directory and deleting all categories and subcategories.")
-    parser.add_argument("directory", help="Path to the directory to reset.")
-    args = parser.parse_args()
-
-    reset_directory(args.directory)
-    print(f"Directory {args.directory} has been reset.")

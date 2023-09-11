@@ -6,7 +6,7 @@
       "format": "%(asctime)s - %(levelname)s - %(message)s"
     },
     "colored": {
-      "()": "src.config.logger_config.ColoredFormatter",
+      "()": "src.setup.ColoredFormatter",
       "format": "%(asctime)s - %(levelname)s - %(message)s"
     }
   },
