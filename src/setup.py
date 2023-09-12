@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import logging.config
 
 class ColoredFormatter(logging.Formatter):
     COLORS = {
@@ -23,14 +24,16 @@ class ColoredFormatter(logging.Formatter):
             f"{self.COLORS['MESSAGE']}{record.getMessage()}{self.COLORS['ENDC']}"
         )
 
+def _setup_logging(app_directory: str):
 
-def setup_logging(filepath: str):
+    # Create logs directory
+    logs_directory = os.path.join(app_directory, "logs")
+    if not os.path.exists(logs_directory):
+        os.makedirs(logs_directory)
 
     log_dir = os.path.join(os.path.expanduser("~"), ".file-organizer", "logs")
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
 
-    with open(filepath, "r") as f:
+    with open("config/logging.json", "r") as f:
         config = json.load(f)
 
     for handler in config['handlers'].values():
@@ -38,3 +41,25 @@ def setup_logging(filepath: str):
             handler['filename'] = handler['filename'].format(USER_HOME=log_dir)
 
     logging.config.dictConfig(config)
+
+
+
+def _setup_cofigs_dir(app_directory: str):
+    configs_directory = os.path.join(app_directory, "configs")
+    if not os.path.exists(configs_directory):
+        os.makedirs(configs_directory)
+
+
+
+def setup_environment():
+    # User home directory
+    home_directory = os.path.expanduser("~")
+    # Create .file-organizer directory if it doesn't exist
+    app_directory = os.path.join(home_directory, ".file-organizer")
+    if not os.path.exists(app_directory):
+        os.makedirs(app_directory)
+
+    # Setup configs directory
+    _setup_cofigs_dir(app_directory)
+    # Setup logging configurations
+    _setup_logging(app_directory)
