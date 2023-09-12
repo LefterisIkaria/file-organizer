@@ -1,4 +1,5 @@
 import os
+import platform
 import shutil
 
 
@@ -28,3 +29,33 @@ def reset_directory(directory: str):
                             sub_item_path, file), directory)
                     os.rmdir(sub_item_path)  # Delete the now-empty subcategory
             os.rmdir(item_path)  # Delete the now-empty category
+
+
+def clear_console():
+    system_name = platform.system()
+
+    if system_name == "Windows":
+        # Windows
+        os.system('cls')
+    elif system_name in ["Linux", "Darwin"]:
+        # Linux and MacOs
+        os.system('clear')
+    else:
+        print(f"Doesn't support this operating system: {system_name}")
+
+
+def draw_table(headers: list[str], data: list[list[str]]):
+
+     # Determine column widths
+    column_widths = [max(len(item[col_idx]) for item in [headers] + data) for col_idx in range(len(headers))]
+    
+    # Draw the table
+    header_row = " | ".join([headers[col_idx].ljust(column_widths[col_idx]) for col_idx in range(len(headers))])
+    divider = "-+-".join(["-" * column_widths[col_idx] for col_idx in range(len(headers))])
+    
+    print(divider)
+    print(header_row)
+    print(divider)
+    for row in data:
+        print(" | ".join([row[col_idx].ljust(column_widths[col_idx]) for col_idx in range(len(headers))]))
+        print(divider)
