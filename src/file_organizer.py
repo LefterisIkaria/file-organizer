@@ -16,8 +16,13 @@ Module to process and sort the directories via a json config file.
 import os
 import platform
 import shutil
+import logging
 
-from models import Category, Config
+from src.models import Category, Config
+
+
+LOG = logging.getLogger(__name__)
+
 
 class FileOrganizer:
 
@@ -27,22 +32,25 @@ class FileOrganizer:
         'Darwin': ['/', '/System', '/Library', '/usr', '/bin', '/sbin']
     }
 
-    def __init__(self, directory):
-        self.directory = directory
-
-    def validate_directory(self):
-        
-        if not os.path.exists(self.directory):
-            raise ValueError("Directory does not exist")
-
-        os_name = platform.system()  # or another method to get the OS name
-        if self.directory in self.CRITICAL_DIRECTORIES.get(os_name, []):
-            raise ValueError("Cannot process a critical system directory")
-
-        # Test permissions by trying to list the directory
+    def validate_directory(self, directory: str):
+        """
+        Validates the directory existance, permissions and if it is
+        a critical directory that shouldn't change it's structure
+        """
         try:
-            os.listdir(self.directory)
+            if not os.path.exists(directory):
+                LOG.error(f"Directory {directory} does not exist!")
+                raise ValueError("Directory does not exist")
+
+            os_name = platform.system()  # method to get the OS name
+            if directory in self.CRITICAL_DIRECTORIES.get(os_name, []):
+                LOG.error(f"Attempted to process critical system directory: {directory}")
+                raise ValueError("Cannot process a critical system directory")
+
+            # Test permissions by trying to list the directory
+            os.listdir(directory)
         except PermissionError:
+            LOG.error(f"No permissions to access the directory: {directory}")
             raise PermissionError("No permissions to access the directory")
 
 
@@ -55,7 +63,10 @@ class FileOrganizer:
         :param directory: The main directory path.
         :param categories: List of category names.
         """
+
         for category in categories:
+
+            # Create the path to the category
             category_path = os.path.join(directory, category.name)
             
              # Check if the category directory exists
@@ -64,12 +75,19 @@ class FileOrganizer:
                 for root, _, files in os.walk(category_path, topdown=False):  # Using topdown=False to iterate from innermost directory
                     for file in files:
                         file_path = os.path.join(root, file)
-                        # Move each file to the main directory
-                        shutil.move(file_path, directory)
+                        try:
+                            # Move each file to the main directory
+                            shutil.move(file_path, directory)
+                            LOG.info(f"Moved {file} from {root} to {directory}")
+                        except Exception as e:
+                            LOG.error(f"Error moving {file} to main directory: {e}")
 
                     # Check if the directory is empty and it's not the main category directory
                     if not os.listdir(root) and root != category_path:
-                        os.rmdir(root)
+                        try:
+                            os.rmdir(root)
+                        except Exception as e:
+                            LOG.error(f"Error removing directory {root}: {e}")
 
 
     def create_categories(self, directory: str, categories: list[Category]):
@@ -81,18 +99,28 @@ class FileOrganizer:
         :param categories: List of category objects.
         """
         for category in categories:
+
+            # Get category path
             category_path = os.path.join(directory, category.name)
             
             # Create the main category directory if it doesn't exist
             if not os.path.exists(category_path):
-                os.makedirs(category_path)
+                try:
+                    os.makedirs(category_path)
+                    LOG.info(f"Created category directory {category_path}")
+                except Exception as e:
+                    LOG.error(f"Error creating directory {category_path}: {e}")
             
             # If categorize_extensions is true, create subdirectories for each extension
             if category.categorize_extensions:
                 for ext in category.extensions:
                     ext_dir = os.path.join(category_path, ext.lstrip('.'))
                     if not os.path.exists(ext_dir):
-                        os.makedirs(ext_dir)
+                        try:
+                            os.makedirs(ext_dir)
+                            LOG.info(f"Created extension directory {ext_dir}")
+                        except Exception as e:
+                            LOG.error(f"Error creating directory {ext_dir}: {e}")
 
 
     def categorize_files(self, directory: str, categories: list[Category]):
@@ -103,19 +131,31 @@ class FileOrganizer:
         :param categories: List of category objects.
         """
         
-        # First, let's create a mapping of extensions to their respective categories.
+       # Create a mapping of extensions to their respective categories.
         extension_to_category = {}
         for category in categories:
             for ext in category.extensions:
                 extension_to_category[ext] = category
         
-        # Now, let's go through each file in the main directory.
+        # Go through each file in the main directory.
         for filename in os.listdir(directory):
             file_path = os.path.join(directory, filename)
             
             # Ensure it's a file and not a directory.
             if not os.path.isfile(file_path):
+                LOG.debug(f"Skipping {file_path} directory")
                 continue
+            
+            # If the file starts with a dot (i.e., it's hidden), move to ".hidden" directory.
+            if filename.startswith('.'):
+                LOG.warning(f"File {filename} is a hidden file")
+                target_directory = os.path.join(directory, ".hidden")
+                try:
+                    shutil.move(file_path, target_directory)
+                    LOG.info(f"Moved {filename} to {target_directory}")
+                    continue
+                except Exception as e:
+                    LOG.error(f"Error moving {filename} to {target_directory}: {e}")
             
             # Get the file's extension.
             _, ext = os.path.splitext(filename)
@@ -123,18 +163,23 @@ class FileOrganizer:
             # Determine its category.
             category = extension_to_category.get(ext)
             if not category:
-                # If no category exists for the extension, we might want to place it in an 'Uncategorized' folder.
-                # This is up to your design.
-                continue
-            
-            # Determine the target directory based on whether we're categorizing by extension.
-            if category.categorize_extensions:
-                target_directory = os.path.join(directory, category.name, ext.lstrip('.'))
+                # If the extension doesn't match any category, move to "Uncategorized" directory.
+                LOG.warning(f"File {filename} has no category")
+                target_directory = os.path.join(directory, "Uncategorized")
             else:
-                target_directory = os.path.join(directory, category.name)
+                # Determine the target directory based on whether we're categorizing by extension.
+                if category.categorize_extensions:
+                    LOG.info(f"Category {category.name} will categorize extensions")
+                    target_directory = os.path.join(directory, category.name, ext.lstrip('.'))
+                else:
+                    target_directory = os.path.join(directory, category.name)
             
             # Move the file to its category directory (or sub-directory).
-            shutil.move(file_path, target_directory)
+            try:
+                shutil.move(file_path, target_directory)
+                LOG.info(f"Moved {filename} to {target_directory}")
+            except Exception as e:
+                LOG.error(f"Error moving {filename} to {target_directory}: {e}")
 
 
     def cleanup_directory(self, directory: str, categories: list[Category]):
@@ -146,6 +191,8 @@ class FileOrganizer:
         """
         
         for category in categories:
+
+            # Get category path
             category_directory = os.path.join(directory, category.name)
             
             # If we're categorizing by extension, we need to check each subdirectory.
@@ -154,17 +201,39 @@ class FileOrganizer:
                     ext_directory = os.path.join(category_directory, ext.lstrip('.'))
                     # If the subdirectory exists and is empty, remove it.
                     if os.path.exists(ext_directory) and not os.listdir(ext_directory):
-                        os.rmdir(ext_directory)
-            
+                        try:
+                            os.rmdir(ext_directory)
+                            LOG.info(f"Removed empty directory {ext_directory}")
+                        except Exception as e:
+                            LOG.error(f"Error removing directory {ext_directory}: {e}")
+
             # Now, after possibly removing subdirectories, if the category directory is empty, remove it.
             if os.path.exists(category_directory) and not os.listdir(category_directory):
-                os.rmdir(category_directory)
-    
+                try:
+                    os.rmdir(category_directory)
+                    LOG.info(f"Removed empty category directory {category_directory}")
+                except Exception as e:
+                    LOG.error(f"Error removing directory {category_directory}: {e}")
 
 
     def process_config(self, config: Config):
+        
+        LOG.info(f"Start processing config on directory {config.directory}")
+        
+        special_categories = [
+            Category(name="Uncategorized"),
+            Category(name=".hidden")
+        ]
+
         self.validate_directory(config.directory)
-        self.reset_categories(config.directory, config.categories)
-        self.create_categories(config.directory, config.categories)
-        self.categorize_files(config.directory, config.categories)
-        self.cleanup_directory(config.directory, config.categories)
+        self.reset_categories(config.directory, config.categories + special_categories)
+        self.create_categories(config.directory, config.categories + special_categories)
+        self.categorize_files(config.directory, config.categories + special_categories)
+        self.cleanup_directory(config.directory, config.categories + special_categories)
+
+    
+    def process_configs(self, configs: list[Config]):
+
+        for config in configs:
+            if config.active:
+                self.process_config(config)

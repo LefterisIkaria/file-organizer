@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 import json
 import os
+import logging
 from typing import Optional
-
 from src.models import Config
+
+LOG = logging.getLogger(__name__)
 
 class IConfigService(ABC):
 
@@ -54,6 +56,12 @@ class ConfigFileService(IConfigService):
                 with open(config_path, 'r') as f:
                     data = json.load(f)
                     config = Config.from_dict(data)
+
+                    # Validate config
+                    if not config.is_valid():
+                        LOG.warning(f"Config {file} is invalid and will be skipped.")
+                        continue
+
                     self.configs_map[config.directory] = (config, file)
 
 
