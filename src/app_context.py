@@ -1,5 +1,5 @@
-from src.config_service import IConfigService
-from src.file_organizer import FileOrganizer
+from config_service import IConfigService
+from file_organizer import FileOrganizer
 
 
 class AppContext:

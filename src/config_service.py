@@ -3,7 +3,7 @@ import json
 import os
 import logging
 from typing import Optional
-from src.models import Config
+from models import Config
 
 LOG = logging.getLogger(__name__)
 

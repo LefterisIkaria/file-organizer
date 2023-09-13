@@ -3,6 +3,8 @@ import json
 import logging
 import logging.config
 
+from utils import get_resource_path
+
 class ColoredFormatter(logging.Formatter):
     COLORS = {
         'TIMESTAMP': '\033[90m',
@@ -33,7 +35,7 @@ def _setup_logging(app_directory: str):
 
     log_dir = os.path.join(os.path.expanduser("~"), ".file-organizer", "logs")
 
-    with open("config/logging.json", "r") as f:
+    with open(get_resource_path("config/logging.json"), "r") as f:
         config = json.load(f)
 
     for handler in config['handlers'].values():

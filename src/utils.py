@@ -1,39 +1,12 @@
 import json
 import os
 import platform
-import shutil
 import logging
+import sys
 
-from src.models import Config
+from models import Config
 
 LOG = logging.getLogger(__name__)
-
-def reset_directory(directory: str):
-    """
-    Resets a directory by moving all files to the main directory
-    and deleting all categories and subcategories.
-    """
-    # List all items in the directory
-    for item in os.listdir(directory):
-        item_path = os.path.join(directory, item)
-
-        # If it's a file, continue (because it's already in the main directory)
-        if os.path.isfile(item_path):
-            continue
-
-        # If it's a directory (category or subcategory)
-        if os.path.isdir(item_path):
-            # Move all files in this directory to the main directory
-            for sub_item in os.listdir(item_path):
-                sub_item_path = os.path.join(item_path, sub_item)
-                if os.path.isfile(sub_item_path):
-                    shutil.move(sub_item_path, directory)
-                elif os.path.isdir(sub_item_path):  # It's a subcategory
-                    for file in os.listdir(sub_item_path):
-                        shutil.move(os.path.join(
-                            sub_item_path, file), directory)
-                    os.rmdir(sub_item_path)  # Delete the now-empty subcategory
-            os.rmdir(item_path)  # Delete the now-empty category
 
 
 def clear_console():
@@ -49,8 +22,23 @@ def clear_console():
         print(f"Doesn't support this operating system: {system_name}")
 
 
+def get_resource_path(relative_path: str) -> str:
+    # Determine if the application is bundled
+    bundled = getattr(sys, 'frozen', False)
+    
+    if bundled:
+        # If bundled, adjust the path to the location of the bundled data
+        base_path = sys._MEIPASS
+        return os.path.join(base_path, relative_path)
+    else:
+        # Otherwise, use the current directory (typical during development)
+        # base_path = os.path.dirname(os.path.abspath(__file__))
+        return relative_path
+    
+
+
 def get_template_config() -> Config | None:
-    with open("config/template.json", "r") as f:
+    with open(get_resource_path("config/template.json"), "r") as f:
         try:
             data = json.load(f)
             return Config.from_dict(data)

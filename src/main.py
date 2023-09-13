@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 import logging
-from src.app_context import AppContext
-from src.config_service import ConfigFileService
-from src.setup import configs_path, setup_environment
-from src.file_organizer import FileOrganizer
-from src.cli import MainMenu, MenuManager
+from app_context import AppContext
+from config_service import ConfigFileService
+from setup import configs_path, setup_environment
+from file_organizer import FileOrganizer
+from cli import MainMenu, MenuManager
 
 # Configure logging
 LOG = logging.getLogger(__name__)
