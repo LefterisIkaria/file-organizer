@@ -28,9 +28,9 @@ class Category:
 
 @dataclass
 class Schedule:
-    type: str
-    interval: int
-    active: bool
+    type: str = "MINUTE"
+    interval: int = 1
+    active: bool = bool
 
 
     @staticmethod
@@ -55,8 +55,7 @@ class Config:
     directory: str
     active: bool = True
     categories: set[Category] = field(default_factory=set)
-    schedule: Schedule = Schedule(active=False, interval=1, type="MINUTE")
-
+    schedule: Schedule = field(default_factory=Schedule)
 
     @staticmethod
     def from_dict(data: dict[str, any]) -> 'Config':
