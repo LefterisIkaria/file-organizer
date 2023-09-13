@@ -222,9 +222,15 @@ class FileOrganizer:
 
     def process_config(self, config: Config):
         
-        LOG.info(f"Start processing config on directory {config.directory}")
-
-        self.validate_directory(config.directory)
+        if not config.active:
+            LOG.info(f"Config for directory {config.directory} is inactive, skipping...")
+            return
+        try:
+            self.validate_directory(config.directory)
+        except Exception as e:
+            LOG.warning(f"Skipping this directory {config.directory}")
+            return
+        
         self.reset_directory(config.directory, config.categories)
         self.create_categories(config.directory, config.categories)
         self.categorize_files(config.directory, config.categories)
@@ -232,7 +238,5 @@ class FileOrganizer:
 
     
     def process_configs(self, configs: list[Config]):
-
         for config in configs:
-            if config.active:
-                self.process_config(config)
+            self.process_config(config)

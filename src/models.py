@@ -1,13 +1,13 @@
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 LOG = logging.getLogger(__name__)
 
 @dataclass
 class Category:
     name: str
-    extensions: set[str] 
-    categorize_extensions: bool
+    extensions: set[str] = field(default_factory=set)
+    categorize_extensions: bool = False
 
     @staticmethod
     def from_dict(data: dict[str, any]) -> 'Category':
@@ -52,10 +52,10 @@ class Schedule:
 
 @dataclass
 class Config:
-    active: bool
     directory: str
-    categories: set[Category]
-    schedule: Schedule
+    active: bool = True
+    categories: set[Category] = field(default_factory=set)
+    schedule: Schedule = Schedule(active=False, interval=1, type="MINUTE")
 
 
     @staticmethod

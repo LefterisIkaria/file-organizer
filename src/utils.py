@@ -1,7 +1,12 @@
+import json
 import os
 import platform
 import shutil
+import logging
 
+from src.models import Config
+
+LOG = logging.getLogger(__name__)
 
 def reset_directory(directory: str):
     """
@@ -42,6 +47,17 @@ def clear_console():
         os.system('clear')
     else:
         print(f"Doesn't support this operating system: {system_name}")
+
+
+def get_template_config() -> Config | None:
+    with open("config/template.json", "r") as f:
+        try:
+            data = json.load(f)
+            return Config.from_dict(data)
+        except Exception as e:
+            LOG.error(e)
+            return None
+
 
 
 class Table:
