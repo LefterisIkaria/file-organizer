@@ -18,7 +18,7 @@ import platform
 import shutil
 import logging
 
-from src.models import Category, Config
+from models import Category, Config
 
 
 LOG = logging.getLogger(__name__)

@@ -1,9 +1,9 @@
 import os
-import time
+import sys
 from app_context import AppContext
-from src.models import Category, Config, Schedule
-from src.app_context import AppContext
-from src.utils import clear_console, Table, get_template_config
+from models import Category, Config, Schedule
+from app_context import AppContext
+from utils import clear_console, Table, get_template_config
 
 class MenuManager:
     def __init__(self, RootMenu: type['Menu'], ctx: AppContext, initial_data: dict[str, any] = {}):
@@ -95,6 +95,7 @@ class MainMenu(Menu):
         print("Choose action:")
         print("   --show      <directory>")
         print("   --create")
+        print("   --delete    <directory>")
         print("   --search    <directory>/<empty>")
         print("   --organize  <directory>/<empty>")
         print("   --reset")
@@ -117,6 +118,20 @@ class MainMenu(Menu):
                 input("You dind't specify a directory...")
         elif "--create" in action:
             self.menu_manager.change_menu(ConfigCreateMenu(self.menu_manager, self.ctx))
+        elif "--delete" in action:
+            try:
+                dir = action.split()[1]
+                config = self.ctx.service.get_config(directory=dir)
+                if config:
+                    self.ctx.service.delete_config(directory=config.directory)
+                    self.menu_manager.restart()
+                    input(f"Deleted config for {dir}")
+                else:
+                    input(f"config in directory path `{dir}` not found...")
+            except IndexError as e:
+                input("You dind't specify a directory...")
+            except Exception as e:
+                input(f"Something went wrong deleting config of directory: {dir}")
         elif "--search" in action:
             try:
                 searched = action.split()[1]
@@ -162,7 +177,7 @@ class MainMenu(Menu):
         elif "--help" in action:
             self.menu_manager.change_menu(HelpMenu(self.menu_manager, self.ctx))
         elif "--exit" in action:
-            exit(0)
+            sys.exit(0)
         else:
             input(f"This action don't exists: {action}")
 
@@ -226,6 +241,7 @@ class HelpMenu(Menu):
         data = [
             ("--show", "<directory>", "Show details for the config in the specified directory."),
             ("--create", "", "Open menu to create a new configuration file."),
+            ("--delete", "<directory>", "Deletes a configuration of the specified directory"),
             ("--search", "<directory>/<empty>", "Search for a configuration by the directory, reset table if no params"),
             ("--organize", "<directory>/<empty>", "Run the organizer for all configs if no params else for a specific config."),
             ("--reset", "<directory>", "Reset the directory for a specific config."),
