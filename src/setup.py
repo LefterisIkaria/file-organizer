@@ -63,3 +63,10 @@ def setup_environment():
     _setup_cofigs_dir(app_directory)
     # Setup logging configurations
     _setup_logging(app_directory)
+
+
+def configs_path():
+    # User home directory
+    home_directory = os.path.expanduser("~")
+    # Create .file-organizer directory if it doesn't exist
+    return os.path.join(home_directory, ".file-organizer", "configs")

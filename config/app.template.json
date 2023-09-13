@@ -85,6 +85,7 @@
   ],
   "schedule": {
     "type": "MINTUTE",
-    "interval": 1
+    "interval": 1,
+    "active": false
   }
 }
