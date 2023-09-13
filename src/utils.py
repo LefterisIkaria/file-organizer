@@ -44,18 +44,40 @@ def clear_console():
         print(f"Doesn't support this operating system: {system_name}")
 
 
-def draw_table(headers: list[str], data: list[list[str]]):
+class Table:
 
-     # Determine column widths
-    column_widths = [max(len(item[col_idx]) for item in [headers] + data) for col_idx in range(len(headers))]
+    def __init__(self, headers: list[str] | tuple[str], data: list[tuple[str]]) -> None:
+        self.headers = ["#"] + headers
+        self.set_data(data)
+        
+        self.column_widths = self._compute_column_widths()
     
-    # Draw the table
-    header_row = " | ".join([headers[col_idx].ljust(column_widths[col_idx]) for col_idx in range(len(headers))])
-    divider = "-+-".join(["-" * column_widths[col_idx] for col_idx in range(len(headers))])
+
+    def set_data(self, data: list[tuple[str]]):
+        self.data = [(str(i+1),) + row for i, row in enumerate(data)]
     
-    print(divider)
-    print(header_row)
-    print(divider)
-    for row in data:
-        print(" | ".join([row[col_idx].ljust(column_widths[col_idx]) for col_idx in range(len(headers))]))
+
+    def _compute_column_widths(self):
+       # Determine column widths
+       column_widths = [max(len(str(item[col_idx])) for item in [self.headers] + self.data) for col_idx in range(len(self.headers))]
+       return column_widths
+    
+
+    def draw_table(self):
+        # Draw the table
+        header_row = " | ".join([self.headers[col_idx].ljust(self.column_widths[col_idx]) for col_idx in range(len(self.headers))])
+        divider = "-+-".join(["-" * self.column_widths[col_idx] for col_idx in range(len(self.headers))])
+
         print(divider)
+        print(header_row)
+        print(divider)
+        for row in self.data:
+            print(" | ".join([str(row[col_idx]).ljust(self.column_widths[col_idx]) for col_idx in range(len(self.headers))]))
+            print(divider)
+    
+
+    def get_row(self, idx: int):
+        return self.data[idx] if idx < len(self.data) else None
+    
+    def empty(self):
+        return len(self.data) == 0

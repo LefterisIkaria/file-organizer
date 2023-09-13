@@ -1,6 +1,7 @@
 import logging
-from app_context import AppContext
-from src.setup import setup_environment
+from src.app_context import AppContext
+from src.config_service import ConfigFileService
+from src.setup import configs_path, setup_environment
 from src.file_organizer import FileOrganizer
 from src.cli import MainMenu, MenuManager
 
@@ -13,8 +14,13 @@ def main():
     # Set up the application folders and logging
     setup_environment()
     
-    app_context = AppContext()
-
+    # Setup application ctx dependencies
+    service = ConfigFileService(configs_directory=configs_path())
+    organizer = FileOrganizer()
+    
+    # Initialize application context
+    app_context = AppContext(service=service, organizer=organizer)
+    
     menu_manager = MenuManager(RootMenu=MainMenu, ctx=app_context)
     menu_manager.run()
 
