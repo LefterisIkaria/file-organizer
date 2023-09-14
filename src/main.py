@@ -23,6 +23,7 @@ def main():
     # Initialize application context
     app_context = AppContext(service=service, organizer=organizer)
     
+    # Create the menu manager to run the cli
     menu_manager = MenuManager(RootMenu=MainMenu, ctx=app_context)
     menu_manager.run()
 

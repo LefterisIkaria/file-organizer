@@ -3,14 +3,19 @@ Module to process and sort the directories via a json config file.
 
     Directory Proccess Steps
     --------------------------------------------------------------------
-    Step 1. Validate that the directory exists
-    Setp 2. Validate that the directory is not a critical directory (like C://Windows, and others for windows, linux, mac)
-    Step 3. Validate that have permissions to that directory
-    Step 4. Check if any category exists and move all files from the 
-            category and subcategories back to the main directory
-    Step 5. Create missing categories & one for Uncategorized and one for Hidden files that is a hidden directory
+    Step 1. Validations:
+        - Validates that the directory exists
+        - Validates that the directory is not a critical directory (like C://Windows, and others for windows, linux, mac)
+        - Validates that have permissions to sort that directory
+    
+    Step 2. Check if any category exists and move all files from the category and subcategories back to the main directory
+    
+    Step 3. Create missing categories plus `Uncategorized` and `.hidden`, one for files that have no category 
+            and one for files that are hidden.
+
     Step 6. Move files to the appropriate categories/subcategories
-    Step 7. Go through all categories/subcategories and delete empty ones
+
+    Step 7. Check any categories/subcategories and remove empty ones.
 """
 
 import os
