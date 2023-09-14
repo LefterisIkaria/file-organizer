@@ -1,74 +1,8 @@
 import os
 import sys
-from app_context import AppContext
-from models import Category, Config, Schedule
-from app_context import AppContext
-from utils import clear_console, Table, get_template_config
-
-class MenuManager:
-    def __init__(self, RootMenu: type['Menu'], ctx: AppContext, initial_data: dict[str, any] = {}):
-        
-        self.root_menu = RootMenu(self, ctx)
-        self.root_menu._enter(data=initial_data)
-        
-        self.menus_stack = [self.root_menu]
-
-    @property
-    def current_menu(self) -> 'Menu':
-        return self.menus_stack[-1]
-
-    def change_menu(self, new_menu: 'Menu', data: dict[str, any] = {}):
-        self.current_menu._exit(data)
-        self.menus_stack.append(new_menu)
-        self.current_menu._enter(data)
-
-    def back(self, data: dict[str, any] = {}):
-        if len(self.menus_stack) > 1:
-            self.menus_stack.pop()._exit(data)
-            self.current_menu._enter(data)
-    
-    def restart(self, data: dict[str, any] = {}):
-        self.current_menu._exit(data)
-        self.current_menu._enter(data)
-    
-    def back_to_root(self, data: dict[str, any] = {}):
-        while self.current_menu != self.root_menu:
-            self.back(data)
-
-    def exit(self):
-        self.back_to_root()
-        self.root_menu._exit()
-        exit(0)
-
-    def run(self):
-        while True:
-            clear_console()
-            self.current_menu._display()
-            self.current_menu._update()
-
-
-class Menu:
-    """Base class for all states."""
-    def __init__(self, menu_manager: MenuManager, ctx: AppContext):
-        self.menu_manager = menu_manager
-        self.ctx = ctx
-    
-    def _enter(self, data: dict[str, any] = {}):
-        """Initialize method when entering a menu"""
-        pass
-
-    def _display(self):
-        """Display the menu options for this state."""
-        pass
-
-    def _update(self):
-        """Return the next state based on user input."""
-        pass
-
-    def _exit(self, data: dict[str, any] = {}):
-        """Clean up method called when exiting e menu"""
-        pass
-
+from menu_system import *
+from models import Category, Config
+from utils import Table, get_template_config
 
 
 class MainMenu(Menu):

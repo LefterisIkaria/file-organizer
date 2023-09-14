@@ -6,6 +6,7 @@ import logging.config
 from utils import get_resource_path
 
 class ColoredFormatter(logging.Formatter):
+    """Class to provide a colored formatter in console logs"""
     COLORS = {
         'TIMESTAMP': '\033[90m',
         'LEVEL_NAME': {
@@ -27,6 +28,7 @@ class ColoredFormatter(logging.Formatter):
         )
 
 def _setup_logging(app_directory: str):
+    """Sets up the logging for the app"""
 
     # Create logs directory
     logs_directory = os.path.join(app_directory, "logs")
@@ -47,6 +49,7 @@ def _setup_logging(app_directory: str):
 
 
 def _setup_cofigs_dir(app_directory: str):
+    """Sets up the configs directory"""
     configs_directory = os.path.join(app_directory, "configs")
     if not os.path.exists(configs_directory):
         os.makedirs(configs_directory)
@@ -54,6 +57,7 @@ def _setup_cofigs_dir(app_directory: str):
 
 
 def setup_environment():
+    """Sets up the application environment in order to run"""
     # User home directory
     home_directory = os.path.expanduser("~")
     # Create .file-organizer directory if it doesn't exist
@@ -68,6 +72,7 @@ def setup_environment():
 
 
 def configs_path():
+    """Retrieve the configs path"""
     # User home directory
     home_directory = os.path.expanduser("~")
     # Create .file-organizer directory if it doesn't exist
