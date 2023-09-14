@@ -4,10 +4,11 @@ File Organizer is a desktop application designed to automatically sort and organ
 
 ## Features
 
-- **GUI Configuration**: Easily set up directories, categories, and file extensions through a user-friendly interface.
-- **Scheduling**: Automatically sort files at specified intervals, such as hourly, daily, or weekly.
+<!-- - **GUI Configuration**: Easily set up directories, categories, and file extensions through a user-friendly interface. -->
+<!-- - **Scheduling**: Automatically sort files at specified intervals, such as hourly, daily, or weekly. -->
+<!-- - **Fallback Category**: Optionally specify a default category for uncategorized files. -->
+- **CLI Menu**: Setup configuration with a cli menu.
 - **Custom Categories**: Define custom categories and associate specific file extensions with each category.
-- **Fallback Category**: Optionally specify a default category for uncategorized files.
 - **Logging**: Keep track of the application's operations and any issues encountered.
 
 ## Installation
@@ -26,9 +27,9 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Run the GUI:
+1. Run the CLI:
 2. Configure your directories, categories, and scheduling preferences.
-3. Start the organizer to automatically sort your files based on your configuration.
+3. Run actions to organize your directories based on your configurations.
 
 ## Contributing
 
