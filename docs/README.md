@@ -35,7 +35,7 @@ pip install -r requirements.txt
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## Releases
-[Download the executable here](https://github.com/LefterisIkaria/file-organizer/releases/download/v1.0.0/main)
+[Linux release](https://github.com/LefterisIkaria/file-organizer/releases/download/v1.0.0/main.tar.gz)
 
 
 ## License
