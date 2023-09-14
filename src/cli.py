@@ -98,7 +98,7 @@ class MainMenu(Menu):
         print("   --delete    <directory>")
         print("   --search    <directory>/<empty>")
         print("   --organize  <directory>/<empty>")
-        print("   --reset")
+        print("   --reset     <directory>")
         print("   --help")
         print("   --exit")
         
@@ -160,6 +160,10 @@ class MainMenu(Menu):
                     self.ctx.organizer.process_config(config)
             except IndexError as e:
                 configs = self.ctx.service.get_configs()
+                if not configs:
+                    input("There are no configs to organize..")
+                    return
+                
                 self.ctx.organizer.process_configs(configs)
             finally:
                 input("Finished organizing")
@@ -208,7 +212,7 @@ class ConfigCreateMenu(Menu):
             if config:
                 config.directory = dir
                 self.ctx.service.create_config(config)
-                input(f"Config for {dir} created succesfully")
+                input(f"Config for {dir} created successfully")
             else:
                 input("Something went wrong, couldn't create config from template")
         elif option == "2":
@@ -256,7 +260,7 @@ class HelpMenu(Menu):
         print("1. Back")
 
     def _update(self):
-        option = input("Options")
+        option = input("Option: ")
         if option == "1":
             self.menu_manager.back()
         else:
@@ -443,21 +447,25 @@ class ConfigEditCategoriesMenu(Menu):
             
             input(f"Error {e}")
 
-    def add_extensions_to_category(self, new_category, extensions_input):
+    def add_extensions_to_category(self, new_category: Category, extensions_input: str):
         extensions_added = 0
         if extensions_input:
+            
             all_extensions = {ext for category in self.config.categories for ext in category.extensions}
-            extensions = extensions_input.strip().split(",")
-            for ext in extensions:
-                extension = ext
-                if not ext.startswith("."):
-                    extension = "." + ext
+            
+            # Split and strip spaces
+            extensions = {ext.strip() for ext in extensions_input.split(",")}
+            for extension in extensions:
+                # Add the "." prefix if not present
+                if not extension.startswith("."):
+                    extension = "." + extension
                     
-                if extension not in all_extensions:
+                # Check if extension is unique
+                if extension not in all_extensions and extension not in new_category.extensions:
                     new_category.extensions.append(extension)
                     extensions_added += 1
                 else:
-                    print(f"{extension} already exists in another category")
+                    print(f"{extension} already exists in another category or in the current category")
         
         return extensions_added
 
@@ -465,19 +473,21 @@ class ConfigEditCategoriesMenu(Menu):
     def remove_extensions_from_category(self, category, extensions_input):
         extensions_removed = 0
         if extensions_input:
-            # all_extensions = {ext for category in self.config.categories for ext in category.extensions}
-            extensions = extensions_input.strip().split(",")
-            for ext in extensions:
-                extension = ext
-                if not ext.startswith("."):
-                    extension = "." + ext
+            # Split and strip spaces
+            extensions = [ext.strip() for ext in extensions_input.split(",")]
+            
+            for extension in extensions:
+                # Add the "." prefix if not present
+                if not extension.startswith("."):
+                    extension = "." + extension
                     
+                # Check if extension exists in the category
                 if extension not in category.extensions:
-                    print(f"{extension} don't exists in {category.name}")
+                    print(f"{extension} doesn't exist in {category.name}")
                 else:
                     category.extensions.remove(extension)
                     extensions_removed += 1
-        
+            
         return extensions_removed        
     
 
