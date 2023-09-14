@@ -1,6 +1,7 @@
 # File Organizer
 
-File Organizer is a desktop application designed to automatically sort and organize files in specified directories based on user-defined categories and file extensions. The application provides a GUI for easy configuration and can be scheduled to run at specific intervals.
+File Organizer is a desktop application designed to automatically sort and organize files in specified directories based on user-defined categories and file extensions. The application provides a CLI menu to configure and run the commands to sort your directories.
+<!-- GUI for easy configuration and can be scheduled to run at specific intervals. -->
 
 ## Features
 
