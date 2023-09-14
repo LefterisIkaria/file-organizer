@@ -1,12 +1,12 @@
 import os
-from random import choice
 import shutil
 import unittest
 import tempfile
 import logging
-from src.models import Category
-import src.setup as setup
-from src.file_organizer import FileOrganizer
+import setup
+from models import Category
+from file_organizer import FileOrganizer
+from random import choice
 
 
 LOG = logging.getLogger(__name__)
@@ -46,13 +46,6 @@ NUM_OF_FILES = 100
 
 
 class TestFileOrganizer(unittest.TestCase):
-
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        
-        # setup logging
-        setup.setup_logging("config/logging.json")
 
 
     def setUp(self) -> None:
@@ -231,10 +224,3 @@ class TestFileOrganizer(unittest.TestCase):
         # Check if main category directories remain intact
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, "CategoryA")))
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, "CategoryB")))
-
-    
-
-
-
-if __name__ == "__main__":
-    unittest.main()

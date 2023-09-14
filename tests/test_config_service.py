@@ -2,9 +2,8 @@ import json
 import os
 import shutil
 from unittest import TestCase
-import unittest
-from src.config_service import ConfigFileService
-from src.models import Category, Config, Schedule
+from models import Category, Config, Schedule
+from config_service import ConfigFileService
 
 
 MOCK_CONFIGS = [
@@ -171,8 +170,3 @@ class TestConfigService(TestCase):
         # 4. Ensure that the json file is removed
         expected_filepath = os.path.join(self.mock_dir, f"{exists_config.dir_to_filename()}.json")
         self.assertFalse(os.path.exists(expected_filepath))
-
-
-
-if __name__ == "__main__":
-    unittest.main()
