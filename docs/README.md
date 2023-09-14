@@ -38,6 +38,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Releases
 [Linux release](https://github.com/LefterisIkaria/file-organizer/releases/download/v1.0.0/main.tar.gz)
+[MacOs release](https://github.com/LefterisIkaria/file-organizer/releases/download/v1.0.0/main-macos.zip)
 
 
 ## License
