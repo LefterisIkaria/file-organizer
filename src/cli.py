@@ -20,7 +20,7 @@ class MainMenu(Menu):
     def _display(self):
         print("Configuration list")
         if self.config_table.empty():
-            print("No configs found...")
+            print("No configuration found...")
         else:
             self.config_table.draw_table()
         
@@ -47,9 +47,9 @@ class MainMenu(Menu):
                 if config:
                     self.menu_manager.change_menu(ConfigShowMenu(self.menu_manager, self.ctx), {'config': config})
                 else:
-                    input(f"config in directory path `{dir}` not found...")
+                    input(f"Config in directory path `{dir}` not found...")
             except IndexError as e:
-                input("You dind't specify a directory...")
+                input("You didn't specify a directory...")
         elif "--create" in action:
             self.menu_manager.change_menu(ConfigCreateMenu(self.menu_manager, self.ctx))
         elif "--delete" in action:
@@ -61,9 +61,9 @@ class MainMenu(Menu):
                     self.menu_manager.restart()
                     input(f"Deleted config for {dir}")
                 else:
-                    input(f"config in directory path `{dir}` not found...")
+                    input(f"Config in directory path `{dir}` not found...")
             except IndexError as e:
-                input("You dind't specify a directory...")
+                input("You didn't specify a directory...")
             except Exception as e:
                 input(f"Something went wrong deleting config of directory: {dir}")
         elif "--search" in action:
@@ -95,7 +95,7 @@ class MainMenu(Menu):
             except IndexError as e:
                 configs = self.ctx.service.get_configs()
                 if not configs:
-                    input("There are no configs to organize..")
+                    input("There are no configs to organize...")
                     return
                 
                 self.ctx.organizer.process_configs(configs)
@@ -109,7 +109,7 @@ class MainMenu(Menu):
                     self.ctx.organizer.reset_directory(directory=config.directory, categories=config.categories)
                     self.ctx.organizer.cleanup_directory(directory=config.directory, categories=config.categories)
                 
-                input(f"Finished reseting {dir}")
+                input(f"Finished resetting {dir}")
             except IndexError as e:
                 input("You didn't specifiy a directory")
         elif "--help" in action:
@@ -117,7 +117,7 @@ class MainMenu(Menu):
         elif "--exit" in action:
             sys.exit(0)
         else:
-            input(f"This action don't exists: {action}")
+            input(f"This action doesn't exist: {action}")
 
 
 class ConfigCreateMenu(Menu):
@@ -136,11 +136,11 @@ class ConfigCreateMenu(Menu):
             dir = input("Directory path: ")
             found = self.ctx.service.get_config(dir)
             if found:
-                input(f"Config already exists for {found} directory")
+                input(f"Config already exists for {found} directory.")
                 return
             
             if not os.path.exists(dir):
-                input(f"path: {dir} don't exists")
+                input(f"path: {dir} doesn't exist")
             
             config = get_template_config()
             if config:
@@ -148,12 +148,12 @@ class ConfigCreateMenu(Menu):
                 self.ctx.service.create_config(config)
                 input(f"Config for {dir} created successfully")
             else:
-                input("Something went wrong, couldn't create config from template")
+                input("Something went wrong, couldn't create config from template.")
         elif option == "2":
             dir = input("Directory path: ")
             found = self.ctx.service.get_config(dir)
             if found:
-                input(f"Config already exists for {found} directory")
+                input(f"There's already a config for directory: {found}.")
                 return
 
             config = Config(directory=dir)

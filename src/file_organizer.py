@@ -59,8 +59,8 @@ class FileOrganizer:
 
         # Test permissions by trying to list the directory
         if not os.access(directory, os.R_OK | os.W_OK):
-            LOG.error(f"No permissions to access the directory: {directory}")
-            raise PermissionError("No permissions to access the directory")
+            LOG.error(f"No permission to access the directory: {directory}")
+            raise PermissionError("No permission to access the directory")
 
 
     def reset_directory(self, directory: str, categories: list[Category]):
